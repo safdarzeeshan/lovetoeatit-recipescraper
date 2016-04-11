@@ -1,0 +1,19 @@
+
+how to start sinatra
+rerun 'ruby app.rb'
+
+  RECIPE_ATTRIBUTES = [
+    :author,
+    :canonical_url,
+    :cook_time,
+    :description,
+    :image_url,
+    :ingredients,
+    :instructions,
+    :name,
+    :nutrition,
+    :prep_time,
+    :published_date,
+    :total_time,
+    :yield
+  ]
