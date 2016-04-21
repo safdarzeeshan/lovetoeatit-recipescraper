@@ -22,10 +22,17 @@ get '/' do
 
 
     # url give no information
+
+    # if recipe.canonical_url == nil
+    #     puts 'recipe url cannot be parsed'
+    #     content_type :json
+    #     { :recipe_url => recipe_url, :error => 'no information available'}.to_json
+
     if recipe.canonical_url == nil
         puts 'recipe url cannot be parsed'
+        status 400
         content_type :json
-        { :recipe_url => recipe_url, :error => 'no information available'}.to_json
+        { :recipe_url => recipe_url, :error => 'Unable to get recipe information form this URL.'}.to_json
 
     # recipe blog can be parsed
     else
