@@ -1,10 +1,44 @@
-source "https://rubygems.org"
-# This should be the same as the version of Ruby you have installed locally
-ruby "2.0.0"
+GEM
+  remote: https://rubygems.org/
+  specs:
+    activesupport (3.2.22.2)
+      i18n (~> 0.6, >= 0.6.4)
+      multi_json (~> 1.0)
+    blankslate (3.1.3)
+    hangry (0.0.13)
+      activesupport (~> 3.0)
+      iso8601 (~> 0.4.0)
+      nokogiri (~> 1.5)
+    i18n (0.7.0)
+    ingreedy (0.0.9)
+      parslet (~> 1.7.0, >= 1.7.0)
+    iso8601 (0.4.1)
+    json (1.8.3)
+    mini_portile2 (2.0.0)
+    multi_json (1.11.2)
+    nokogiri (1.6.7.2)
+      mini_portile2 (~> 2.0.0.rc2)
+    parslet (1.7.1)
+      blankslate (>= 2.0, <= 4.0)
+    rack (1.6.4)
+    rack-protection (1.5.3)
+      rack
+    sinatra (1.4.7)
+      rack (~> 1.5)
+      rack-protection (~> 1.4)
+      tilt (>= 1.3, < 3)
+    sinatra-cross_origin (0.3.2)
+    tilt (2.0.2)
 
-gem 'sinatra'
-gem 'open-uri'
-gem 'hangry'
-gem 'json'
-gem 'ingreedy'
-gem 'sinatra/cross_origin'
+PLATFORMS
+  ruby
+
+DEPENDENCIES
+  hangry
+  ingreedy
+  json
+  sinatra (= 1.4.7)
+  sinatra-cross_origin
+
+BUNDLED WITH
+   1.11.2
