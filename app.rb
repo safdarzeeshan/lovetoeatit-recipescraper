@@ -9,6 +9,7 @@ require 'hangry'
 require 'json'
 require 'ingreedy'
 require 'sinatra/cross_origin'
+require 'nokogiri'
 
 
 configure do
@@ -24,6 +25,7 @@ get '/' do
 
     puts recipe.canonical_url
 
+    #error if recipe blog url cannot be parsed
     if recipe.canonical_url == nil
         puts 'recipe url cannot be parsed'
         status 400
@@ -49,6 +51,17 @@ get '/' do
             ingedient_list.push({:ingredient => {:name => ingredient.ingredient}, :amount => to_frac(ingredient.amount.to_s).to_s + ' ' + ingredient.unit.to_s})
         end
 
+        if recipe.image_url == nil
+            #get wp image form html
+            puts 'image url not found'
+            page = Nokogiri::HTML(open(recipe_url))
+            image_url = page.css('img.alignnone')[0]['src']
+            recipe.image_url = image_url
+
+        else
+            puts 'image url found'
+        end
+
         content_type :json
         { :url => recipe.canonical_url, :name => recipe.name, :time => recipe.cook_time, :snippet => recipe.description, :image_url => recipe.image_url, :serving_size => recipe.yield, :ingredients => ingedient_list}.to_json
 
@@ -68,4 +81,12 @@ def to_frac(value)
 
 end
 
+options "*" do
+  response.headers["Allow"] = "HEAD,GET,PUT,POST,DELETE,OPTIONS"
+  response.headers["Access-Control-Allow-Headers"] = "X-Requested-With, X-HTTP-Method-Override, Content-Type, Cache-Control, Accept,  x-csrftoken"
+  # response.headers["Access-Control-Allow-Credentials"] = 'true'
+  # response.headers["Access-Control-Allow-Origin"] = '*'
+
+  200
+end
 
