@@ -2,6 +2,10 @@
 how to start sinatra
 rerun 'ruby app.rb'
 
+->with bundle
+bundle exec rackup
+
+
   RECIPE_ATTRIBUTES = [
     :author,
     :canonical_url,
