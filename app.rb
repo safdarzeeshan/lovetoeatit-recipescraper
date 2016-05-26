@@ -23,10 +23,11 @@ get '/' do
     puts 'recipe url read'
     recipe = Hangry.parse(recipe_html_string)
 
-    puts recipe.canonical_url
+    puts recipe
 
     #error if recipe blog url cannot be parsed
     if recipe.canonical_url == nil
+
         puts 'recipe url cannot be parsed'
         status 400
         content_type :json
@@ -55,7 +56,17 @@ get '/' do
             #get wp image form html
             puts 'image url not found'
             page = Nokogiri::HTML(open(recipe_url))
-            image_url = page.css('img.alignnone')[0]['src']
+
+            if page.at_css('img.wp-post-image')
+                image_url = page.css('img.wp-post-image')[0]['src']
+
+            elsif page.at_css("link[itemprop=image]")
+                image_url = page.css('link[itemprop=image]')[0]['href']
+                print image_url
+
+            else
+                image_url = nil
+            end
             recipe.image_url = image_url
 
         else

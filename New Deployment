@@ -1,0 +1,55 @@
+
+1- Launch EC2 instance (recipe-Scraper) and add rule to security group to authorize inbound connections to port 80 from anywhere.
+
+2. connect to EC2 via SSH and prepare Sinatra Environment:
+
+
+sudo apt-get update
+sudo apt-get install git-core curl zlib1g-dev build-essential libssl-dev libreadline-dev libyaml-dev libsqlite3-dev sqlite3 libxml2-dev libxslt1-dev libcurl4-openssl-dev python-software-properties libffi-dev
+
+#install ruby
+sudo su
+cd
+git clone https://github.com/rbenv/rbenv.git ~/.rbenv
+echo 'export PATH="$HOME/.rbenv/bin:$PATH"' >> ~/.bashrc
+echo 'eval "$(rbenv init -)"' >> ~/.bashrc
+exec $SHELL
+
+git clone https://github.com/rbenv/ruby-build.git ~/.rbenv/plugins/ruby-build
+echo 'export PATH="$HOME/.rbenv/plugins/ruby-build/bin:$PATH"' >> ~/.bashrc
+exec $SHELL
+
+git clone https://github.com/rbenv/rbenv-gem-rehash.git ~/.rbenv/plugins/rbenv-gem-rehash
+
+rbenv install 2.0.0-p481
+rbenv global 2.0.0-p481
+ruby -v
+gem install bundler
+
+#Clone the source code
+git clone https://github.com/safdarzeeshan/lovetoeatit-recipescraper.git
+cd lovetoeatit-recipescraper
+bundle install
+
+
+#install nginx
+apt-get install nginx
+
+#Edit your nginx configuration file /etc/nginx/sites-enabled/default , andchange the block
+
+location / {
+    proxy_pass       http://localhost:4567;
+    proxy_set_header Host      $host;
+    proxy_set_header X-Real-IP $remote_addr;
+}
+
+#Restart nginx
+service nginx restart
+
+Then start a new screen session:
+
+screen -S "My App"
+and run your app within the session:
+
+bundle exec rackup
+Once it's up and running you can disconnect from the screen session by pressing **Ctrl+a" and then "d"
