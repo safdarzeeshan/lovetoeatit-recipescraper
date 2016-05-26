@@ -1,0 +1,10 @@
+#update the source code
+cd lovetoeatit-recipescraper
+git pull origin
+bundle install
+
+#stop ruby processes
+killall ruby
+
+#restart
+bundle exec rackup
