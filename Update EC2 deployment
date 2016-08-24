@@ -7,4 +7,6 @@ bundle install
 killall ruby
 
 #restart
+
 bundle exec rackup
+Once it's up and running you can disconnect from the screen session by pressing **Ctrl+a" and then "d"
