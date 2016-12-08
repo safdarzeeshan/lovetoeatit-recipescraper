@@ -52,6 +52,7 @@ get '/' do
 
         # check recipe image_url resolution
         if recipe.image_url != nil
+            puts recipe.image_url
             image_size =  FastImage.size(recipe.image_url, :http_header => {'User-Agent' => 'Fake Browser'})
             puts image_size
             if (image_size[0] < 400) || (image_size[1] < 400)
@@ -85,12 +86,23 @@ def get_new_image (recipe_url)
     page = Nokogiri::HTML(open(recipe_url))
     image_urls = page.search('img').map{ |img| img['src'] }
 
+    puts 'get new image'
+    puts image_urls
+
     for image_url in image_urls
-        #check resolution
-        image_type = FastImage.type(image_url)
-        image_size =  FastImage.size(image_url, :http_header => {'User-Agent' => 'Fake Browser'})
-        if (image_type != 'gif') && (image_size[0] > 400) && (image_size[1] > 400)
-            return image_url
+
+        puts image_url
+
+        begin
+            #check resolution
+            image_type = FastImage.type(image_url)
+            image_size =  FastImage.size(image_url, :http_header => {'User-Agent' => 'Fake Browser'})
+            if (image_type != 'gif') && (image_size[0] > 400) && (image_size[1] > 400)
+                return image_url
+            end
+        rescue
+            puts 'error'
+            next
         end
     end
 
